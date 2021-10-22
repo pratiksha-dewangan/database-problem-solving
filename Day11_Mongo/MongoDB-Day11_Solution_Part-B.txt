@@ -1,0 +1,192 @@
+1- Insert Array of document in inventory database
+{
+item: "ABC2",
+details: { model: "14Q3", manufacturer: "M1 Corporation" },
+stock: [ { size: "M", qty: 50 } ],
+category: "clothing"
+},
+{
+item: "MNO2",
+details: { model: "14Q3", manufacturer: "ABC Company" },
+stock: [ { size: "S", qty: 5 }, { size: "M", qty: 5 }, { size: "L", qty: 1 } ],
+category: "clothing"
+},
+{
+item: "IJK2", d
+details: { model: "14Q2", manufacturer: "M5 Corporation" },
+stock: [ { size: "S", qty: 5 }, { size: "L", qty: 1 } ],
+category: "houseware"
+}
+
+--------------------------------------------------------------------
+
+> db.inv.insert([{
+... item: "ABC2",
+... details: { model: "14Q3", manufacturer: "M1 Corporation" },
+... stock: [ { size: "M", qty: 50 } ],
+... category: "clothing"
+... },
+... {
+... item: "MNO2",
+... details: { model: "14Q3", manufacturer: "ABC Company" },
+... stock: [ { size: "S", qty: 5 }, { size: "M", qty: 5 }, { size: "L", qty: 1 } ],
+... category: "clothing"
+... },
+... {
+... item: "IJK2",
+... details: { model: "14Q2", manufacturer: "M5 Corporation" },
+... stock: [ { size: "S", qty: 5 }, { size: "L", qty: 1 } ],
+... category: "houseware"
+... } ]);
+BulkWriteResult({
+        "writeErrors" : [ ],
+        "writeConcernErrors" : [ ],
+        "nInserted" : 3,
+        "nUpserted" : 0,
+        "nMatched" : 0,
+        "nModified" : 0,
+        "nRemoved" : 0,
+        "upserted" : [ ]
+})
+-----------------------------------------------------------
+2- Find informtion about items and details from inventory collection where category is houseware
+------------------------------------------------------------------
+> db.inv.find({"category":"houseware"},{details :1 , item : 1});
+{ "_id" : ObjectId("61127fc8318a279658339c39"), "item" : "IJK2", "details" : { "model" : "14Q2", "manufacturer" : "M5 Corporation" } }
+
+-----------------------------------------------------------------
+3- Increment the quantity by 10, for item_id "IJK2"
+------------------------------------------------------
+> db.inv.update({"item" : "ABC2"},{$inc : {"stock.$[].qty" : 10 }});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.inv.find().pretty();
+{
+        "_id" : ObjectId("61127fc8318a279658339c37"),
+        "item" : "ABC2",
+        "details" : {
+                "model" : "14Q3",
+                "manufacturer" : "M1 Corporation"
+        },
+        "stock" : [
+                {
+                        "size" : "M",
+                        "qty" : 60
+                }
+        ],
+        "category" : "clothing"
+}
+{
+        "_id" : ObjectId("61127fc8318a279658339c38"),
+        "item" : "MNO2",
+        "details" : {
+                "model" : "14Q3",
+                "manufacturer" : "ABC Company"
+        },
+        "stock" : [
+                {
+                        "size" : "S",
+                        "qty" : 5
+                },
+                {
+                        "size" : "M",
+                        "qty" : 5
+                },
+                {
+                        "size" : "L",
+                        "qty" : 1
+                }
+        ],
+        "category" : "clothing"
+}
+{
+        "_id" : ObjectId("61127fc8318a279658339c39"),
+        "item" : "IJK2",
+        "details" : {
+                "model" : "14Q2",
+                "manufacturer" : "M5 Corporation"
+        },
+        "stock" : [
+                {
+                        "size" : "S",
+                        "qty" : 5
+                },
+                {
+                        "size" : "L",
+                        "qty" : 1
+                }
+        ],
+        "category" : "houseware"
+}
+
+-------------------------------------------------------
+4-Remove the category field from the document where item: "ABC2",
+----------------------------------------------------------------
+> db.inv.update({"item":"ABC2"},{$unset :{category : 0}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.inv.find();
+{ "_id" : ObjectId("61127fc8318a279658339c37"), "item" : "ABC2", "details" : { "model" : "14Q3", "manufacturer" : "M1 Corporation" }, "stock" : [ { "size" : "M", "qty" : 60 } ] }
+{ "_id" : ObjectId("61127fc8318a279658339c38"), "item" : "MNO2", "details" : { "model" : "14Q3", "manufacturer" : "ABC Company" }, "stock" : [ { "size" : "S", "qty" : 5 }, { "size" : "M", "qty" : 5 }, { "size" : "L", "qty" : 1 } ], "category" : "clothing" }
+{ "_id" : ObjectId("61127fc8318a279658339c39"), "item" : "IJK2", "details" : { "model" : "14Q2", "manufacturer" : "M5 Corporation" }, "stock" : [ { "size" : "S", "qty" : 5 }, { "size" : "L", "qty" : 1 } ], "category" : "houseware" }
+
+----------------------------------------------------------------
+5-Update the name of model from "14Q3" to "14P3" for item_id MNO2
+> db.inv.updateOne({"item":"MNO2"},{$set:{"details.model":"14P3"}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+db.inv.find().pretty()
+{
+        "_id" : ObjectId("61127fa40621faf753ac1916"),
+        "item" : "ABC2",
+        "details" : {
+                "model" : "14Q3",
+                "manufacturer" : "M1 Corporation"
+        },
+        "stock" : [
+                {
+                        "size" : "M",
+                        "qty" : 50
+                }
+        ]
+}
+{
+        "_id" : ObjectId("61127fa40621faf753ac1917"),
+        "item" : "MNO2",
+        "details" : {
+                "model" : "14P3",
+                "manufacturer" : "ABC Company"
+        },
+        "stock" : [
+                {
+                        "size" : "S",
+                        "qty" : 5
+                },
+                {
+                        "size" : "M",
+                        "qty" : 5
+                },
+                {
+                        "size" : "L",
+                        "qty" : 1
+                }
+        ],
+        "category" : "clothing"
+}
+{
+        "_id" : ObjectId("61127fa40621faf753ac1918"),
+        "item" : "IJK2",
+        "details" : {
+                "model" : "14Q2",
+                "manufacturer" : "M5 Corporation"
+        },
+        "stock" : [
+                {
+                        "size" : "S",
+                        "qty" : 15
+                },
+                {
+                        "size" : "L",
+                        "qty" : 11
+                }
+        ],
+        "category" : "houseware"
+
+

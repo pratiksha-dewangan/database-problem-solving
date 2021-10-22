@@ -1,0 +1,284 @@
+1. CREATE TABLE with NULL CONSTRAINT
+
+=>  create table check_null_constraint
+    (
+	id int not null,
+	name varchar(20),
+	salary int
+	);
+	
+	desc check_null_constraint;
+-------------------------------------------------------------------------
+2. CREATE TABLE to check values with CHECK CONSTRAINT
+
+=>  create table check_constraint
+	(
+	id int Primary Key,
+	name varchar(20),
+	salary int check(salary > 7000)
+	);
+	
+	insert into check_constraint values(10, 'Pratiksha', 6000);  --- Error
+	insert into check_constraint values(10, 'Prachi', 8000);  --- inserted
+	
+---------------------------------------------------------------------------	
+3. CREATE TABLE with CHECK CONSTRAINT using IN operator
+
+=>  select * from check_constraint where id in(20, 30);
+
+---------------------------------------------------------------------------
+4. CREATE TABLE with CHECK CONSTRAINT and LIKE operator
+
+=>  create table check_like_constraint
+	(
+	id int Primary Key,
+	name varchar(20),
+	salary int check(salary > 7000)
+	);
+	
+	select name from check_like_constraint where name like 'A%';
+	select name from check_like_constraint where name like '_r%';
+	
+---------------------------------------------------------------------------
+5. CREATE TABLE with AND and OR operator and CHECK CONSTRAINT
+
+=>  create table and_or_constraint
+	(
+	id int Primary Key,
+	name varchar(20),
+	salary int check(salary > 7000)
+	);
+	
+	select * from and_or_constraint where salary > 10000 and salary < 20000;
+	select * from and_or_constraint where id = 10 or id = 20;
+	
+---------------------------------------------------------------------------
+6. UNIQUE CONSTRAINT
+
+=>  create table unique_constraint
+	(
+	id int Primary Key,
+	name varchar(20),
+	salary int,
+	dept_id int unique
+	);
+	
+---------------------------------------------------------------------------
+7. UNIQUE CONSTRAINT check unique value
+
+=>  insert into unique_constraint values(10, 'Srishti', 20000, 100); --- No Error
+	insert into unique_constraint values(20, 'Aakriti', 80000, 100); --- Error
+	insert into unique_constraint values(20, 'Aakriti', 80000, null); --- No Error
+	
+---------------------------------------------------------------------------
+8. CREATE TABLE with DEFAULT CONSTRAINT
+
+=>  create table default_constraint
+	(
+	id int Primary Key,
+	name varchar(20),
+	salary int default 10000
+	);
+	
+	insert into default_constraint values(20, 'Aakriti', 20000);
+	insert into default_constraint (id, name) values(10, 'Srishti');
+	
+---------------------------------------------------------------------------
+9. CREATE TABLE with AUTO INCREMENT
+
+=>  create table auto_increment_constraint
+	(
+	id int Primary Key auto increment,
+	name varchar(20),
+	salary int
+	);
+	
+	insert into default_constraint values(10, 'Aakriti', 20000);
+	insert into default_constraint (name, salary) values('Srishti', 10000);
+	
+---------------------------------------------------------------------------
+10. PRIMARY KEY CONSTRAINT
+
+=>  create table primary_key_constraint
+	(
+	id int Primary Key,
+	name varchar(20),
+	salary int
+	);
+	
+	insert into primary_key_constraint values(10, 'Aakriti', 20000); -- No Error
+	insert into primary_key_constraint values(10, 'Srishti', 80000); -- Error
+	
+---------------------------------------------------------------------------
+11. CREATE TABLE PRIMARY KEY CONSTRAINT on single column
+
+=>  create table primary_key_constraint
+	(
+	id int Primary Key,
+	name varchar(20),
+	salary int
+	);
+	
+	insert into primary_key_constraint values(10, 'Aakriti', 20000); -- No Error
+	insert into primary_key_constraint values(10, 'Srishti', 80000); -- Error
+	
+---------------------------------------------------------------------------
+12. CREATE TABLE PRIMARY KEY UNIQUE CONSTRAINT
+
+=>  create table primary_key_unique_constraint
+	(
+	id int Primary Key,
+	name varchar(20),
+	salary int,
+	dept_id int unique
+	);
+	
+---------------------------------------------------------------------------
+13. CREATE TABLE PRIMARY KEY on multiple columns
+
+=>  create table primary_key_multiple_constraint
+	(
+	id int,
+	name varchar(20),
+	salary int,
+	dept_id int,
+	Primary Key(id, dept_id)
+	);
+	
+---------------------------------------------------------------------------
+14. creating table with FOREIGN KEY CONSTRAINT
+
+=>  create table foreigh_key_parent_constraint
+	(
+	dept_id int Primary Key,
+	name varchar(20)
+	);
+	
+	create table foreigh_key_child_constraint
+	(
+	id int Primary Key,
+	name varchar(20),
+	salary int,
+	dept_id int,
+	Foreign Key(id) references foreigh_key_parent_constraint(dept_id)
+	);
+	
+---------------------------------------------------------------------------
+15. CREATE TABLE with FOREIGN KEY CONSTRAINT on multiple columns
+
+=>  create table vehicle_category
+	(
+	vehicle_category_code int Primary Key,
+	vehicle_category_description varchar(20)
+	);
+
+	create table Model
+	(
+	model_code int Primary Key,
+	daily_hire_rate int,
+	model_name varchar(20)
+	);
+
+	create table vehicle
+	(
+	reg_number int Primary Key,
+	daily_hire_rate int,
+	date_mot_due date,
+	engine_size int,
+	Foreign Key (reg_number) references Model(model_code),
+	Foreign Key (reg_number) references vehicle_category(vehicle_category_code)
+	);
+	
+---------------------------------------------------------------------------
+16. CREATE TABLE with FOREIGN KEY CONSTRAINT on multiple tables
+
+=>  create table vehicle_category
+	(
+	vehicle_category_code int Primary Key,
+	vehicle_category_description varchar(20)
+	);
+
+	create table Model
+	(
+	model_code int Primary Key,
+	daily_hire_rate int,
+	model_name varchar(20)
+	);
+
+	create table vehicle
+	(
+	reg_number int Primary Key,
+	daily_hire_rate int,
+	date_mot_due date,
+	engine_size int,
+	Foreign Key (reg_number) references Model(model_code),
+	Foreign Key (reg_number) references vehicle_category(vehicle_category_code)
+	);
+	
+---------------------------------------------------------------------------
+17. CREATE TABLE with CASCADE
+
+=>  create table foreigh_key_parent_constraint
+	(
+	dept_id int Primary Key,
+	name varchar(20)
+	);
+	
+	create table foreigh_key_child_1_constraint
+	(
+	id int,
+	name varchar(20),
+	salary int,
+	dept_id int,
+	Foreign Key(id) references foreigh_key_parent_constraint(dept_id)
+	On Delete Set Null
+	);
+	
+	create table foreigh_key_child_2_constraint
+	(
+	id int Primary Key,
+	name varchar(20),
+	salary int,
+	dept_id int,
+	Foreign Key(id) references foreigh_key_parent_constraint(dept_id)
+	On Delete Cascade
+	);
+	
+	create table foreigh_key_child_3_constraint
+	(
+	id int Primary Key,
+	name varchar(20),
+	salary int,
+	dept_id int,
+	Foreign Key(id) references foreigh_key_parent_constraint(dept_id)
+	On Update Cascade
+	);
+	
+---------------------------------------------------------------------------
+18. CREATE TABLE with SET NULL
+
+=>  create table foreigh_key_parent_constraint
+	(
+	dept_id int Primary Key,
+	name varchar(20)
+	);
+	
+	create table foreigh_key_child_1_constraint
+	(
+	id int,
+	name varchar(20),
+	salary int,
+	dept_id int,
+	Foreign Key(id) references foreigh_key_parent_constraint(dept_id)
+	On Delete Set Null
+	);
+	
+---------------------------------------------------------------------------
+19. CREATE TABLE with NO ACTION
+
+=>  create table no_action
+	(
+	id int,
+	name varchar(20),
+	salary int
+	);

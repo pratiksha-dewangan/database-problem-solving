@@ -1,0 +1,185 @@
+1) Display all the records in emp table?
+
+=>  select * from emp;
+
+2) Display all the records in emp table where employee belongs to deptno 10?
+
+=>  select * from emp where deptno = 10;
+ 
+3) Display all the records in emp table where employee does not belong to deptno 30?
+
+=>  select * from emp where deptno != 30;
+
+4) Display total number of records in Emp table?
+
+=> select count(*) from emp;
+
+5) Display emp table with salary descending order?
+
+=>  select * from emp order by salary desc;
+
+6) Display all the records in emp table order by ascending deptno, descending salary?
+
+=>  select * from emp order by depno;
+	select * from emp order by salary desc;
+
+7) Display all employees those who were joined in year 1981?
+
+=>  select * from emp where join_year = 1981;
+
+8) Display COMM in emp table. Display zero in place of null.
+
+=>  select ifnull(comm,0) from emp;
+
+9) Display the records in emp table where MGR in 7698,7566 and sal should be greater then 1500
+
+=>  select * from emp where mrg in(7566,7698) AND sal > 1500;
+
+10) Display all employees where employees hired before 01-JAN-1981
+
+=> select * from emp where hired < '1981-01-01';
+
+11) Display all employees with how many years they have been servicing in the company?
+
+=>  select *, datediff(now(), hire_date) from emp; 
+
+12) Display all employees those were not joined in 1981?
+
+=> select * from emp where join_year != 1981;
+
+13) Display all employees where their salary is less then the Ford’s salary?
+
+=>  select * from emp where salary = (select salary from emp where emp_name = 'ford');
+
+14) Display all records in EMP table those were joined before SCOTT joined?
+
+=>  select * from emp where join_date < (select join_date from emp where emp_name = 'scott');
+
+15) Display all employees those who were joined in third quarter of 1981?
+
+=>  select * from emp where join_date > '1981-09-01';
+
+16) Write a query to display current date?
+
+=>  select current_date();
+
+17) Display distinct job from emp table?
+
+=> select distinct job from emp;
+
+18) Display all the records in emp table where employee hired after 28-SEP-81 and before 03-DEC-81?
+
+=>  select * from emp where hired > '1981-09-28' and hired < '1981-12-03';
+
+19) Write a query that displays the employee’s names with the first letter capitalized and all other letters lowercase for all employees whose name starts with J, A, or M
+
+=>  select names from emp where names like 'A%' or names like 'J%' or names like 'M%';
+
+20) Display the empno, ename, sal, and salary increased by 15%.
+
+=>  select empno, ename, sal, sal + .15 from emp;
+
+21) Display all employees where ename start with J and ends with S
+
+=>  select * from emp where ename like 'J%s'; 
+
+22) Display all employees where employee does not belong to 10,20,40
+
+=>  select * from emp where empid not in(10,20,30);
+
+23) Display all employees where jobs does not belong to PRESIDENT and MANAGER?
+
+=>  select * from emp where jobs not in('PRESIDENT, 'MANAGER');
+
+24) Display the maximum salary in the emp table
+
+=>  select max(salary) from emp; 
+
+25) Display average salary for job SALESMAN
+
+=>  select avg(salary) from emp where department = 'salesman'; 
+
+26) Display all three figures salary in emp table
+
+=>  
+
+27) Display all records in emp table for employee who does not receive any commission
+
+=>  select * from emp where comm = null;
+
+28) Display all ename where first character could be anything, but second character should be L?
+
+=>  select ename from emp where ename like '_l%';
+
+29) Display sum of salary for each department.
+
+=>  select depno, sum(salary) from emp group by depno;
+
+30) Display all department with Minimum salary and maximum salary?
+
+=>  select depno, max(salary), min(salary) from emp group by depno;
+
+31) Display all the departments where department does not have any employees
+
+=>  select department, from emp where employee = null;
+
+32) Display all the departments where department does have atleast one employee
+
+=>  select department, from emp where count(employee) >= 1;
+
+33) Display all employees those who are not managers?
+
+=>  select * from emp where designation != 'manager';
+
+34) Display all the records for deptno which belongs to employee name JAMES?
+
+=>  select * from emp where ename = 'JAMES';
+
+35) Display all the records in emp table where salary should be less then or equal to ADAMS salary?
+
+=>  select * from emp where salary <= (select salary from emp where ename = 'ADAMS');
+
+36) Display all employees those were joined before employee WARD joined?
+
+=>  select * from emp where join_date < (select join_date from emp where ename = 'WARD');
+
+37) Display all subordinate those who are working under BLAKE?
+
+=>  select * from emp where manager = 'BLAKE' group by manager;
+
+38) Display all subordinate(all levels) for employee BLAKE?
+
+=>  select * from emp where manager = 'BLAKE' group by manager;
+
+39) Display all record in emp table for deptno which belongs to KING's Job?
+
+=>  select * from emp where job = 'KING';
+
+40) Display the employees for empno which belongs to job PRESIDENT?
+
+=>  select ename from emp where job = 'PRESIDENT';
+
+41) Display list of ename those who have joined in Year 81 as MANAGER?
+
+=>  select ename from emp where join_year = 1981;
+
+42) Display who is making highest commission?
+
+=>  select max(comm) from emp;
+
+43) Display who is senior most employee? How many years has been working?
+
+=>  select ename, datediff(now(), join_date) from emp where max(datediff(now(), join_date));
+
+44) Display who is most experienced and least experienced employee?
+
+=>  select max(datediff(now(), join_date)), min(datediff(now(), join_date)) from emp;
+
+45) Display all employee whose location is DALLAS?
+
+=> select * from emp where location = 'DALLAS';
+
+46) List ename, job, sal and department of all employees whose salary is not within the salary grade?
+
+=>  select ename, job, department from emp where salary < 5000;
+

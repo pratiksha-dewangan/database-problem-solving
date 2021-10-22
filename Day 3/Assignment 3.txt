@@ -1,0 +1,85 @@
+create table customer 
+(
+customer_id int Primary Key,
+customer_name varchar(20) Not Null,
+customer_gender varchar(20),
+email_id varchar(40),
+phone_number bigint unique,
+address_line_1 varchar(40),
+address_line_2 varchar(40),
+address_line_3 varchar(40),
+town varchar(20),
+country varchar(20)
+);
+
+create table booking_status
+(
+booking_status_code int Primary Key,
+booking_status_description varchar(20)
+);
+
+create table manufacturer
+(
+manufacturer_code int Primary Key,
+manufacturer_name varchar(20),
+manufacturer_details varchar(20)
+);
+
+create table vehicle_category
+(
+vehicle_category_code int Primary Key,
+vehicle_category_description varchar(20)
+);
+
+create table Model
+(
+model_code int Primary Key,
+daily_hire_rate int,
+model_name varchar(20),
+Foreign Key (model_code) references manufacturer(manufacturer_code)
+);
+
+create table vehicle
+(
+reg_number int Primary Key,
+daily_hire_rate int,
+date_mot_due date,
+engine_size int,
+Foreign Key (reg_number) references Model(model_code),
+Foreign Key (reg_number) references vehicle_category(vehicle_category_code)
+);
+
+create table booking
+(
+booking_id int Primary Key,
+date_from date,
+confirmation_letter_sent_yn char(1),
+payment_received_yn char(1),
+Foreign Key (booking_id) references vehicle(reg_number),
+Foreign Key (booking_id) references customer(customer_id),
+Foreign Key (booking_id) references booking_status(booking_status_code)
+);
+
+
+desc customer;
+desc booking;
+desc vehicle;
+desc Model;
+desc vehicle_category;
+desc manufacturer;
+desc booking_status;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

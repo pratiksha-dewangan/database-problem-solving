@@ -1,0 +1,64 @@
+1) Display all records in EMP table those were joined before SCOTT joined?
+
+=>  select * from employees where hire_date < (select hire_date from employees where first_name = 'SCOTT');
+
+2) Display details of department where department has 3 employees?
+
+=>  select distinct d.department_name from 
+	employees e join departments d
+	on e.department_id = d.department_id
+	where e.department_id = 3
+	group by e.department_id;
+
+3) Display details of department with Minimum salary and maximum salary? 
+
+=>  select d.* from 
+	employees e join departments d
+	on e.department_id = d.department_id
+	where e.salary = (select max(salary) from employees) 
+	or e.salary = (select min(salary) from employees);
+
+4) Display all ename, sal, deptno,dname from emp, dept table where all department which has employees as well as department does 
+   not have any employees. This query should include non matching rows.
+
+5) Display all ename, sal, deptno from emp, dept table where all employees which has matching department as well as employee does 
+   not have any departments. This query should include non matching rows.
+
+6) Display all ename, sal, dname. Result must include all employees as well as all departments. This query should include non 
+   matching rows on both the tables.
+
+7) Display all ename, empno, dname from emp, dept table without joining two tables
+
+8) Display all the departments where department does not have any employees
+
+=>  select distinct d.department_name from 
+	employees e join departments d
+	on e.department_id != d.department_id;
+
+9) Display all the departments where department does have atleast one employee
+
+=>  select distinct d.department_name from 
+	employees e join departments d
+	on e.department_id = d.department_id
+	where e.department_id >= 1
+	group by e.department_id;
+
+10) Display all employees those who are not managers?
+
+=>  select * from employees e join departments d on e.department_id = d.department_id where d.manager_id = null;
+
+11) Display all the records for deptno which belongs to employee name JAMES?
+
+=>  select * from departments d join employees e on e.department_id = d.department_id where e.first_name = 'JAMES';
+
+12) Display all the records in emp table where salary should be less then or equal to ADAMS salary?
+
+=>  select * from employees where salary <= (select salary from employees where first_name = 'ADAM');
+
+13) Display ename, sal, grade, dname, loc for each employee.
+
+=>  select e.first_name, e.salary, d.department_name, d.location_id from employees e join departments d on e.department_id = d.department_id ;
+
+14) Display all employee whose location is DALLAS?
+
+=>  select * from employees e join departments d join on e.department_id = d.department_id join locations l on d.location_id = l.location_id where l.city = 'DALLAS';

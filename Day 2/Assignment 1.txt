@@ -1,0 +1,96 @@
+(Created a new database DBT_Assignments
+ command : create database DBT_Assignments;)
+ 
+ 
+1. login to MySQL
+   
+=>  mysql -u root -p;  
+
+2. list different database in MySQL
+
+=>   show databases;
+
+3. How to connect to specific database
+
+=>   use DBT_Assignments;
+
+4. List all the tables available in given database
+
+=>   show tables;   
+
+5. Switch from one database to other
+
+=>	 use edac;
+
+6. Run the script "hrschema.sql" in your database
+
+=>  source E:/May_2021/DBT/hrschema.sql;
+
+7. List the tables that you have in the database now
+
+=> show tables;
+
+8. Describe the structure of each table in MySQL
+
+=>  desc countries;
+    desc departments;           
+	desc emp_details_view;        
+	desc employees;               
+	desc job_history;             
+	desc jobs;                    
+	desc locations;               
+	desc regions;
+
+9. Show the data from each table in MySQL
+
+=>  select * from countries;
+	select * from departments;
+	select * from emp_details_view;
+	select * from employees; 
+	select * from job_history;
+	select * from jobs;
+	select * from locations;
+	select * from regions;
+
+10. Interact with MySQL WorkBench Software
+
+11. Clear the MySQL command prompt
+
+=>  system cls;
+
+12. Fire command to check current user in database
+
+=>  select current_user();
+
+13. Fire command to see current date and time of server
+
+=>  select current_timestamp();
+
+16. Observe the command "select null;"
+      Identify what is null
+	  
+=>		mysql> select null;
+		+------+
+		| NULL |
+		+------+
+		| NULL |
+		+------+
+		1 row in set (0.00 sec)
+
+17. Create your own tables sql file and try to execute in the database.
+
+=>  create table students (
+	id int,
+	Name varchar(20),
+	Date_of_birth date
+	);
+	
+	desc students;
+	
+	insert into students values(10, 'Srishti', '1997-07-24');
+	insert into students values(20, 'Aakriti', '2002-12-02');
+	insert into students values(30, 'Pinki', '1990-11-03');
+	insert into students values(40, 'Vikas', '1984-06-03');
+	  
+	select * from students;
+
